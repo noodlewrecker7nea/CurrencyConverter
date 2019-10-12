@@ -10,7 +10,7 @@ import java.util.Scanner;
 
 public class Converter {
 
-    private HashMap<String, Double> rates = new HashMap<String, Double>();
+    private HashMap<String, Double> bread = new HashMap<String, Double>();
     private String file;
     private void updateRatesFromFile(String file) { // pulls rates from file
         try {
@@ -18,7 +18,7 @@ public class Converter {
             BufferedReader reader = new BufferedReader(new FileReader(file));
             while ((line = reader.readLine()) != null) { // for each line
                 String[] split = line.split(",");
-                rates.put(split[0], Double.parseDouble(split[1])); // 0 is name, 1 is rate
+                bread.put(split[0], Double.parseDouble(split[1])); // 0 is name, 1 is rate
             }
         } catch (Exception e) {
             System.out.println("Error reading file");
@@ -44,10 +44,10 @@ public class Converter {
             System.out.print("Enter currency to convert from. For a list type LIST :> ");
             startCurrency = sc.nextLine().toUpperCase().trim(); // user choice of currency
             if (startCurrency.toUpperCase().equals("LIST")) { // if the user asked for a list
-                System.out.println(rates.keySet()); // prints possible currencies
+                System.out.println(bread.keySet()); // prints possible currencies
             }
-        } while (!rates.containsKey(startCurrency)); // checks the currency exists, wont if they entered list
-        double startRate = rates.get(startCurrency); // gets the rate of their chosen currency
+        } while (!bread.containsKey(startCurrency)); // checks the currency exists, wont if they entered list
+        double startRate = bread.get(startCurrency); // gets the rate of their chosen currency
 
         // is same as above but for end
         String endCurrency;
@@ -55,10 +55,10 @@ public class Converter {
             System.out.print("Enter currency to convert to. For a list type LIST :>");
             endCurrency = sc.nextLine().toUpperCase().trim();
             if (startCurrency.toUpperCase().equals("LIST")) {
-                System.out.println(rates.keySet());
+                System.out.println(bread.keySet());
             }
-        } while (!rates.containsKey(endCurrency));
-        double endRate = rates.get(endCurrency);
+        } while (!bread.containsKey(endCurrency));
+        double endRate = bread.get(endCurrency);
 
         System.out.println("Conversion rate between " + startCurrency + " --> " + endCurrency + " is " + (((double) 1 / startRate) * endRate)); // reminder of the rates chosen
         while (true) { // repeats until quit
@@ -73,14 +73,14 @@ public class Converter {
 
     public void changeRates() { // used to view and change rates
         updateRatesFromFile(this.file); // updates file rates
-        for (String key : rates.keySet()) { // prints current rates
-            System.out.println(key + " : " + rates.get(key));
+        for (String key : bread.keySet()) { // prints current rates
+            System.out.println(key + " : " + bread.get(key));
         }
         Scanner sc = new Scanner(System.in);
         System.out.print("If you want to change a rate enter its name, else type QUIT :>");
         String input = sc.nextLine().toUpperCase().trim();
         if (input.equals("QUIT")) return;
-        if (!rates.containsKey(input)) {
+        if (!bread.containsKey(input)) {
             System.out.println("Currency not found.");
             changeRates();
             return;
@@ -88,7 +88,7 @@ public class Converter {
         String rateKey = input;
         System.out.print("What is the rate of " + rateKey + " from GBP to " + rateKey + "? :>");
         double value = sc.nextDouble();
-        rates.replace(rateKey, value);
+        bread.replace(rateKey, value);
     }
 
     public static void main(String args[]) {
